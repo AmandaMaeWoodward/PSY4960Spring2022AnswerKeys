@@ -1,0 +1,61 @@
+---
+title: "Quiz 2 Answers"
+author: "Amanda Mae Woodward"
+date: "3/28/2022"
+output: html_document
+---
+This quiz is meant to help you synthesize materials we've covered in class. If you'd prefer to use other functions, that's okay too. 
+
+You ARE allowed to work with your peers, but you should each submit your own copy.
+
+ You should see the following variables: 
+subj- subject number
+condition- experimental or control
+stroop- an accuracy score for the stroop task (30 trials)
+nback- an accuracy score for the n back task (recalling a number/object a given number of trials back;50 trials)
+ravens- score on raven's progressive matrices (25 trials)
+
+People are assigned to either complete a cognitive training task (to improve memory) or to have no training. We have  
+
+Upload the psych259-Quiz2.csv file.
+```{r}
+dat<- read.csv("~/Desktop/PSY4960/PSY4960-Quiz2.csv")
+```
+
+1. Take a summary of the full dataset.
+```{r}
+summary(dat)
+```
+
+2. What kind of data do you have (wide or long?). How do you know?
+data are in wide format because each participant has all responses in a single row (columns represent different variables measured at different time points)
+3. Check the type of data presented in the condition column. Make sure this variable is a factor
+```{r}
+class(dat$condition)
+dat$condition<-as.factor(dat$condition)
+```
+
+4. Create a new column called Stroop Accuracy.
+Label those who have a higher than average score at t1 "high EF", those below average "low EF" and those at average "Average EF" (Note: EF stands for executive function). 
+```{r}
+dat$stroopAccuracy<-ifelse(dat$t1_stroop> mean(dat$t1_stroop), "High EF", ifelse(dat$t1_stroop==mean(dat$t1_stroop), "Average EF", "Low EF"))
+```
+
+5. Create a dataset containing participants' nback scores in long format. (Note: you should keep all other variables)
+```{r}
+library(tidyverse)
+colnames(dat)
+nBackLong<-pivot_longer(dat, cols=c("t1_nback", "t2_nback"), names_to = "timePoint",values_to = "nbackScore")
+```
+6. Returning to the original dataset, create a column indicating the difference between the two ravens scores. 
+```{r}
+dat$ravensDiff<-dat$t2_ravens-dat$t1_ravens
+```
+
+7. Based on #6, create two subsets of data: 1 where the ravens difference score is positive and one where it is negative
+```{r}
+posRavens<- subset(dat, dat$ravensDiff>0)
+negRavens<- subset(dat, dat$ravensDiff<0)
+
+```
+
