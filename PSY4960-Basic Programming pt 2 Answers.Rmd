@@ -1,0 +1,81 @@
+---
+title: "PSY4960-basicfunctionsinRpt2"
+author: "YOURNAMEHERE"
+date: "2/2/2022"
+output: html_document
+---
+1.create a variable that contains 8 tv show names.
+```{r}
+shows<- c("Grey's Anatomy", "New Girl", "It's Always Sunny", "Gilmore Girls", "Grace and Frankie", "Vampire Diaries", "That 70s Show", "Criminal Minds")
+```
+
+2. What kind of data is this? explain how you know.
+Currently, this is character level.
+```{r}
+class(shows)
+```
+When I use the class function, it returns "character"
+
+3. Change your variable to a factor. 
+```{r}
+shows<-as.factor(shows)
+```
+
+4. create a vector that contains your rating from 1 (hate it)-5 (love it) of the TV shows you named 
+```{r}
+ratings<- c(7,6,8,7,6,7,8,8)
+```
+5. Combine these two variables into a data frame
+```{r}
+dat<-cbind.data.frame(shows, ratings)
+```
+
+6. Add a column to your dataframe called "goodOrBad." fill in the variable with your opinion about each show
+```{r}
+dat$qualRating<- rep("good", nrow(dat))
+```
+
+7. Create a function that multiplies numbers by 13.
+```{r}
+mult13<- function(number){
+  number*13
+}
+```
+
+8. Create a dataframe that consists of one vector, which  contains the numbers 1-13
+```{r}
+numbers<-1:13
+numberDat<-data.frame(numbers)
+```
+
+9. Test your function from #7 by creating a new column in your dataframe from #8 that contains the output from your function for the numbers 1-13  (i.e. use the column you already made to test your function)
+```{r}
+numberDat$multiplied<- mult13(numberDat$numbers)
+```
+
+10. Use a for loop to determine if the numbers in your column from #9 are even or odd (Hint: %% is a logical operator that tells you if there's a remainder.) 
+```{r}
+for(i in 1:length(numberDat$multiplied)){
+  if(numberDat$multiplied[i]%%2==0){
+    print("even")
+  }
+  else{print("odd")}
+}
+```
+
+11. Challenge save this output to another column in your data frame. 
+```{r}
+numberDat$evenOdd<-NA
+for(i in 1:length(numberDat$multiplied)){
+  if(numberDat$multiplied[i]%%2==0){
+    numberDat$evenOdd[i]<-"even"
+  }
+  else{numberDat$evenOdd[i]<-"odd"}
+}
+```
+
+12. use if/else statements to create a column that indicates whether the numbers in the column created for #9 are "bigger" than 100 or "smaller" than 100.
+```{r}
+numberDat$big100<-ifelse(numberDat$multiplied>100, "bigger", "smaller")
+```
+
