@@ -1,0 +1,63 @@
+---
+title: "PSY4960 Quiz 3"
+author: "Amanda Mae Woodward"
+date: "03/15/2022"
+output: html_document
+---
+This quiz will require you to combine some of the information we've learned about making graphs.
+
+1. Open the starwars dataset. 
+```{r}
+library(tidyverse)
+data(starwars)
+```
+
+2. Create a summary table of character's heights based on their species.
+```{r}
+library(Rmisc)
+
+speciesHeight<- summarySE(starwars, groupvars="species", measurevar = "height", na.rm=TRUE)
+```
+
+3. Use information from #2 to create a bar graph of the average height for each species. (add standard error bars to your graph and make sure to change at least two aesthetic elements of the graph)
+```{r}
+ggplot(speciesHeight, aes(species, height)) + geom_bar(stat="identity",fill= "#336699")+ geom_errorbar(aes(ymin= height - se, ymax= height +se))+theme_classic()+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+4. Create a graph of the Homeworld column. What is the most common homeworld? 
+```{r}
+ggplot(starwars, aes(homeworld))+geom_bar()+theme_classic()+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+Naboo is the most common homeworld 
+
+5. Create a subset for all characters who were in Return of the Jedi (Note: we haven't learned how to separate information in the film column- so you can just select the ones who were ONLY in Return of the Jedi)
+```{r}
+starwars2<- starwars %>% filter(films=="Return of the Jedi")
+```
+
+6. Using this subset of data, create a scatterplot of height versus weight.
+```{r}
+ggplot(starwars2, aes(height, mass))+geom_point()+theme_classic()
+```
+
+7. Add a regression line to the scatterplot you created in #6. 
+```{r}
+ggplot(starwars2, aes(height, mass))+geom_point()+theme_classic()+geom_smooth(method="lm")
+```
+
+8. Open the mtcars dataset. 
+```{r}
+data(mtcars)
+```
+
+9. Use facet_wrap to create a graph of the relationship between mpg and hp. Use cylinder to create facets
+```{r}
+ggplot(mtcars, aes(mpg,hp))+geom_point()+facet_wrap(~cyl)
+```
+
+
+10. Create a graph of hp and mpg. Add cyl as a third variable
+```{r}
+library(viridis)
+ggplot(mtcars, aes(mpg,hp,color=as.factor(cyl)) )+geom_point()+theme_classic()+scale_color_viridis(discrete=TRUE, option="A")
+```
