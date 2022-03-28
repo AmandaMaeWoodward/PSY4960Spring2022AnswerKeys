@@ -1,0 +1,114 @@
+---
+title: 'PSYC4960: Quiz 1'
+author: "Amanda Mae Woodward"
+date: "2/3/2022"
+output: html_document
+---
+Assignment: For this assignment, you will need to use the skills you have developed in the last two weeks. You **are** allowed to work with each other, but answers are graded based on accuracies
+
+**Pt 1**
+1. Create a dataframe containing two columns: one with five super heroes, and one with your rating of how effective they are (1 = not effective; 10 = very effective)
+```{r}
+superHero<- c("Batman", "Superman", "WonderWoman", "BlackPanther", "Flash")
+rating<- c(2,7,8,10,4)
+superHeroDat<-cbind.data.frame(superHero, rating)
+```
+
+2. What are the mean and standard deviation of your ratings? 
+```{r}
+mean(superHeroDat$rating)
+sd(superHeroDat$rating)
+```
+3. Print just the row containing your highest ranked hero.
+```{r}
+superHeroDat[4,]
+```
+
+4. Write a logical statement to determine if your highest ranked superhero and second highest ranked hero have the same ranking
+```{r}
+superHeroDat[4,]==superHeroDat[3,]
+```
+no they are not ranked the same 
+
+**Part 2**
+5. Create a function that indicates whether a number is above 50 or 50 or under
+```{r}
+underFifty<-function(thing){
+  ifelse(thing>50, "greater than 50", "less than 50")
+}
+```
+
+6. Test your function by inputting the number 19
+```{r}
+underFifty(19)
+```
+
+7. Create a vector containing the numbers 1 through 100.
+```{r}
+numbers<-1:100
+```
+
+8. Modify your function to test whether each number in the vector are even or odd. (hint: this means you need to iterate through a list!) 
+```{r}
+evenOdd<-function(number){
+  ifelse(number%%2==0, "even","odd")
+}
+```
+
+9. Test your new function using the vector in #6. 
+```{r}
+evenOdd(numbers)
+```
+
+**Pt 3**
+All questions will use the diamonds dataset (in the ggplot2 library).
+```{r}
+library(ggplot2)
+data(diamonds)
+```
+10. Summarize the dataset.
+```{r}
+summary(diamonds)
+```
+
+11. What type of variable is cut? How do you know? 
+```{r}
+class(diamonds$cut)
+```
+cut is an ordered factor b/c that's what the class function returned 
+
+12. What type of variable is price? How do you know?
+```{r}
+class(diamonds$price)
+```
+price is an integer because that's what class() returned 
+13. Create a subset of the dataset that contains all diamonds with a VS1 clarity. 
+```{r}
+vsdiamonds<-subset(diamonds,diamonds$clarity=="VS1")
+
+```
+
+14.How many diamonds are in this dataset? 
+```{r}
+nrow(vsdiamonds)
+```
+there are 8171 diamonds 
+
+15. Add a column to this subset indicating whether a diamonds' carat is small (less than the first quartile), average (between the first and third quartile), or large (greater than the third quartile).
+```{r}
+vsdiamonds$caratSize<-NA
+sumDiamonds<-summary(vsdiamonds$carat)
+str(sumDiamonds)
+for(i in 1:nrow(vsdiamonds)){
+  if(vsdiamonds$carat[i]<.38){
+    vsdiamonds$caratSize[i]<- "small"
+  }
+  if(vsdiamonds$carat[i]<1.01){
+    vsdiamonds$caratSize[i]<- "large"
+  }
+  else{
+    vsdiamonds$caratSize[i]<- "average"
+    }
+}
+```
+
